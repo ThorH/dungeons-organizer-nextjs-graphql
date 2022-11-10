@@ -1,10 +1,11 @@
 import GqlClient from '../../graphql/apollo-client'
-import { monstersGql } from '../../gqls'
-import { ListingType } from '../../types/Listing'
+import { GET_MONSTERS } from '../../gqls/apiDnD'
+import { ListingInterface } from '../../interfaces/Listing'
 import { Listing } from '../GlobalStyles'
+import Link from 'next/link'
 
 type Props = {
-    monsters: ListingType[]
+    monsters: ListingInterface[]
 }
 
 export default function Monsters({ monsters }: Props) {
@@ -14,8 +15,9 @@ export default function Monsters({ monsters }: Props) {
             <Listing>
                 {monsters.map(monster =>
                     <div key={monster.index}>
-                        <h4>{monster.name}</h4>
-                        <p>index: {monster.index}</p>
+                        <Link href={`/monsters/${monster.index}`}>
+                            <h4>{monster.name}</h4>
+                        </Link>
                         <p>url: {monster.url}</p>
                     </div>
                 )}
@@ -25,7 +27,7 @@ export default function Monsters({ monsters }: Props) {
 }
 
 export const getServerSideProps = async () => {
-    const { data } = await GqlClient.query({ query: monstersGql })
+    const { data } = await GqlClient.query({ query: GET_MONSTERS })
 
     return {
         props: {

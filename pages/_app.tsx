@@ -1,14 +1,14 @@
 import Head from 'next/head'
+import { usePageLoading } from '../hooks/usePageLoading'
 import { ApolloProvider } from '@apollo/client'
 import GqlClient from '../graphql/apollo-client'
-import '../styles/globals.css'
 import { GlobalStyles } from './GlobalStyles'
 import Header from '../components/Header/Header'
 import type { AppProps } from 'next/app'
 
-
-
 export default function App({ Component, pageProps }: AppProps) {
+
+  const { isPageLoading } = usePageLoading()
 
   return (
     <>
@@ -20,7 +20,12 @@ export default function App({ Component, pageProps }: AppProps) {
       <Header />
       <ApolloProvider client={GqlClient}>
         <GlobalStyles />
-        <Component {...pageProps} />
+        {isPageLoading ?
+          <h1>Loading</h1>
+          :
+          <Component {...pageProps} />
+        }
+
       </ApolloProvider>
     </>
   )

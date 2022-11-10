@@ -1,10 +1,11 @@
+import Link from 'next/link'
 import GqlClient from '../../graphql/apollo-client'
-import { classesGql } from '../../gqls'
-import { ListingType } from '../../types/Listing'
+import { GET_CLASSES } from '../../gqls/apiDnD'
+import { ListingInterface } from '../../interfaces/Listing'
 import { Listing } from '../GlobalStyles'
 
 type Props = {
-    classes: ListingType[]
+    classes: ListingInterface[]
 
 }
 
@@ -15,9 +16,9 @@ export default function Classes({ classes }: Props) {
             <Listing>
                 {classes.map(classDnD =>
                     <div key={classDnD.index}>
-                        <h4>{classDnD.name}</h4>
-                        <p>index: {classDnD.index}</p>
-                        <p>url: {classDnD.url}</p>
+                        <Link href={`/classes/${classDnD.index}`}>
+                            <h4>{classDnD.name}</h4>
+                        </Link>
                     </div>
                 )}
             </Listing>
@@ -26,7 +27,7 @@ export default function Classes({ classes }: Props) {
 }
 
 export const getServerSideProps = async () => {
-    const { data } = await GqlClient.query({ query: classesGql })
+    const { data } = await GqlClient.query({ query: GET_CLASSES })
 
     return {
         props: {

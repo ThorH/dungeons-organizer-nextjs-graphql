@@ -13,6 +13,13 @@ export type Scalars = {
   Float: number;
 };
 
+export type Class = {
+  __typename?: 'Class';
+  hit_die?: Maybe<Scalars['Int']>;
+  index?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 export type Listing = {
   __typename?: 'Listing';
   index?: Maybe<Scalars['String']>;
@@ -20,11 +27,44 @@ export type Listing = {
   url?: Maybe<Scalars['String']>;
 };
 
+export type Monster = {
+  __typename?: 'Monster';
+  index?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
+  classByIndex?: Maybe<Class>;
   classes?: Maybe<Array<Maybe<Listing>>>;
+  monsterByIndex?: Maybe<Monster>;
   monsters?: Maybe<Array<Maybe<Listing>>>;
+  spellByIndex?: Maybe<Spell>;
   spells?: Maybe<Array<Maybe<Listing>>>;
+};
+
+
+export type QueryClassByIndexArgs = {
+  index?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryMonsterByIndexArgs = {
+  index?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QuerySpellByIndexArgs = {
+  index?: InputMaybe<Scalars['String']>;
+};
+
+export type Spell = {
+  __typename?: 'Spell';
+  _id?: Maybe<Scalars['ID']>;
+  desc?: Maybe<Array<Maybe<Scalars['String']>>>;
+  index?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -97,17 +137,34 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Class: ResolverTypeWrapper<Class>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Listing: ResolverTypeWrapper<Listing>;
+  Monster: ResolverTypeWrapper<Monster>;
   Query: ResolverTypeWrapper<{}>;
+  Spell: ResolverTypeWrapper<Spell>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  Class: Class;
+  ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Listing: Listing;
+  Monster: Monster;
   Query: {};
+  Spell: Spell;
   String: Scalars['String'];
+};
+
+export type ClassResolvers<ContextType = any, ParentType extends ResolversParentTypes['Class'] = ResolversParentTypes['Class']> = {
+  hit_die?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  index?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ListingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Listing'] = ResolversParentTypes['Listing']> = {
@@ -117,14 +174,35 @@ export type ListingResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MonsterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Monster'] = ResolversParentTypes['Monster']> = {
+  index?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  classByIndex?: Resolver<Maybe<ResolversTypes['Class']>, ParentType, ContextType, Partial<QueryClassByIndexArgs>>;
   classes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Listing']>>>, ParentType, ContextType>;
+  monsterByIndex?: Resolver<Maybe<ResolversTypes['Monster']>, ParentType, ContextType, Partial<QueryMonsterByIndexArgs>>;
   monsters?: Resolver<Maybe<Array<Maybe<ResolversTypes['Listing']>>>, ParentType, ContextType>;
+  spellByIndex?: Resolver<Maybe<ResolversTypes['Spell']>, ParentType, ContextType, Partial<QuerySpellByIndexArgs>>;
   spells?: Resolver<Maybe<Array<Maybe<ResolversTypes['Listing']>>>, ParentType, ContextType>;
 };
 
+export type SpellResolvers<ContextType = any, ParentType extends ResolversParentTypes['Spell'] = ResolversParentTypes['Spell']> = {
+  _id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  desc?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  index?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
+  Class?: ClassResolvers<ContextType>;
   Listing?: ListingResolvers<ContextType>;
+  Monster?: MonsterResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Spell?: SpellResolvers<ContextType>;
 };
 

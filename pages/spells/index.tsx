@@ -1,10 +1,11 @@
 import GqlClient from '../../graphql/apollo-client'
-import { spellsGql } from '../../gqls'
-import { ListingType } from '../../types/Listing'
+import { GET_SPELLS } from '../../gqls/apiDnD'
+import { ListingInterface } from '../../interfaces/Listing'
 import { Listing } from '../GlobalStyles'
+import Link from 'next/link'
 
 type Props = {
-    spells: ListingType[]
+    spells: ListingInterface[]
 
 }
 
@@ -15,8 +16,9 @@ export default function Spells({ spells }: Props) {
             <Listing>
                 {spells.map(spell =>
                     <div key={spell.index}>
-                        <h4>{spell.name}</h4>
-                        <p>index: {spell.index}</p>
+                        <Link href={`/spells/${spell.index}`}>
+                            <h4>{spell.name}</h4>
+                        </Link>
                         <p>url: {spell.url}</p>
                     </div>
                 )}
@@ -26,7 +28,7 @@ export default function Spells({ spells }: Props) {
 }
 
 export const getServerSideProps = async () => {
-    const { data } = await GqlClient.query({ query: spellsGql })
+    const { data } = await GqlClient.query({ query: GET_SPELLS })
 
     return {
         props: {
