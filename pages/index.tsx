@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import GqlClient from '../graphql/apollo-client'
-import { ListingType } from '../interfaces/Listing'
 import { Listing } from './GlobalStyles'
 
 export default function Home() {
