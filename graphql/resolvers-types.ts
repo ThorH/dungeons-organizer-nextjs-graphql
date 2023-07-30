@@ -20,6 +20,12 @@ export type Class = {
   name?: Maybe<Scalars['String']>;
 };
 
+export type ErrorRequest = {
+  __typename?: 'ErrorRequest';
+  message?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Int']>;
+};
+
 export type Listing = {
   __typename?: 'Listing';
   index?: Maybe<Scalars['String']>;
@@ -29,16 +35,35 @@ export type Listing = {
 
 export type Monster = {
   __typename?: 'Monster';
+  alignment?: Maybe<Scalars['String']>;
+  armor_class?: Maybe<Scalars['Int']>;
+  challenge_rating?: Maybe<Scalars['Int']>;
+  charisma?: Maybe<Scalars['Int']>;
+  constitution?: Maybe<Scalars['Int']>;
+  dexterity?: Maybe<Scalars['Int']>;
+  hit_dice?: Maybe<Scalars['String']>;
+  hit_points?: Maybe<Scalars['Int']>;
+  hit_points_roll?: Maybe<Scalars['String']>;
   index?: Maybe<Scalars['String']>;
+  intelligence?: Maybe<Scalars['Int']>;
+  languages?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['String']>;
+  speed?: Maybe<Speed>;
+  strength?: Maybe<Scalars['Int']>;
   type?: Maybe<Scalars['String']>;
+  wisdom?: Maybe<Scalars['Int']>;
+  xp?: Maybe<Scalars['Int']>;
 };
+
+export type MonsterRequest = ErrorRequest | Monster;
 
 export type Query = {
   __typename?: 'Query';
   classByIndex?: Maybe<Class>;
   classes?: Maybe<Array<Maybe<Listing>>>;
-  monsterByIndex?: Maybe<Monster>;
+  googleImage?: Maybe<Scalars['String']>;
+  monsterByIndex?: Maybe<MonsterRequest>;
   monsters?: Maybe<Array<Maybe<Listing>>>;
   spellByIndex?: Maybe<Spell>;
   spells?: Maybe<Array<Maybe<Listing>>>;
@@ -50,6 +75,11 @@ export type QueryClassByIndexArgs = {
 };
 
 
+export type QueryGoogleImageArgs = {
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryMonsterByIndexArgs = {
   index?: InputMaybe<Scalars['String']>;
 };
@@ -57,6 +87,13 @@ export type QueryMonsterByIndexArgs = {
 
 export type QuerySpellByIndexArgs = {
   index?: InputMaybe<Scalars['String']>;
+};
+
+export type Speed = {
+  __typename?: 'Speed';
+  fly?: Maybe<Scalars['String']>;
+  swim?: Maybe<Scalars['String']>;
+  walk?: Maybe<Scalars['String']>;
 };
 
 export type Spell = {
@@ -138,11 +175,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Class: ResolverTypeWrapper<Class>;
+  ErrorRequest: ResolverTypeWrapper<ErrorRequest>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Listing: ResolverTypeWrapper<Listing>;
   Monster: ResolverTypeWrapper<Monster>;
+  MonsterRequest: ResolversTypes['ErrorRequest'] | ResolversTypes['Monster'];
   Query: ResolverTypeWrapper<{}>;
+  Speed: ResolverTypeWrapper<Speed>;
   Spell: ResolverTypeWrapper<Spell>;
   String: ResolverTypeWrapper<Scalars['String']>;
 };
@@ -151,11 +191,14 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Class: Class;
+  ErrorRequest: ErrorRequest;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Listing: Listing;
   Monster: Monster;
+  MonsterRequest: ResolversParentTypes['ErrorRequest'] | ResolversParentTypes['Monster'];
   Query: {};
+  Speed: Speed;
   Spell: Spell;
   String: Scalars['String'];
 };
@@ -167,6 +210,12 @@ export type ClassResolvers<ContextType = any, ParentType extends ResolversParent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ErrorRequestResolvers<ContextType = any, ParentType extends ResolversParentTypes['ErrorRequest'] = ResolversParentTypes['ErrorRequest']> = {
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ListingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Listing'] = ResolversParentTypes['Listing']> = {
   index?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -175,19 +224,47 @@ export type ListingResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type MonsterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Monster'] = ResolversParentTypes['Monster']> = {
+  alignment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  armor_class?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  challenge_rating?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  charisma?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  constitution?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  dexterity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  hit_dice?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hit_points?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  hit_points_roll?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   index?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  intelligence?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  languages?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  size?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  speed?: Resolver<Maybe<ResolversTypes['Speed']>, ParentType, ContextType>;
+  strength?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  wisdom?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  xp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MonsterRequestResolvers<ContextType = any, ParentType extends ResolversParentTypes['MonsterRequest'] = ResolversParentTypes['MonsterRequest']> = {
+  __resolveType: TypeResolveFn<'ErrorRequest' | 'Monster', ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   classByIndex?: Resolver<Maybe<ResolversTypes['Class']>, ParentType, ContextType, Partial<QueryClassByIndexArgs>>;
   classes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Listing']>>>, ParentType, ContextType>;
-  monsterByIndex?: Resolver<Maybe<ResolversTypes['Monster']>, ParentType, ContextType, Partial<QueryMonsterByIndexArgs>>;
+  googleImage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, Partial<QueryGoogleImageArgs>>;
+  monsterByIndex?: Resolver<Maybe<ResolversTypes['MonsterRequest']>, ParentType, ContextType, Partial<QueryMonsterByIndexArgs>>;
   monsters?: Resolver<Maybe<Array<Maybe<ResolversTypes['Listing']>>>, ParentType, ContextType>;
   spellByIndex?: Resolver<Maybe<ResolversTypes['Spell']>, ParentType, ContextType, Partial<QuerySpellByIndexArgs>>;
   spells?: Resolver<Maybe<Array<Maybe<ResolversTypes['Listing']>>>, ParentType, ContextType>;
+};
+
+export type SpeedResolvers<ContextType = any, ParentType extends ResolversParentTypes['Speed'] = ResolversParentTypes['Speed']> = {
+  fly?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  swim?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  walk?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SpellResolvers<ContextType = any, ParentType extends ResolversParentTypes['Spell'] = ResolversParentTypes['Spell']> = {
@@ -200,9 +277,12 @@ export type SpellResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type Resolvers<ContextType = any> = {
   Class?: ClassResolvers<ContextType>;
+  ErrorRequest?: ErrorRequestResolvers<ContextType>;
   Listing?: ListingResolvers<ContextType>;
   Monster?: MonsterResolvers<ContextType>;
+  MonsterRequest?: MonsterRequestResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Speed?: SpeedResolvers<ContextType>;
   Spell?: SpellResolvers<ContextType>;
 };
 
